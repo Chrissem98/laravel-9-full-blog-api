@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Pipes\Categories\CategoryFieldsFilter;
+use App\Http\Pipes\Categories\CategorySortFilter;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
@@ -23,7 +24,8 @@ class CategoryController extends Controller
         $categories = app(Pipeline::class)
                         ->send(Category::query())
                         ->through([
-                            CategoryFieldsFilter::class
+                            CategoryFieldsFilter::class,
+                            CategorySortFilter::class,
                         ])
                         ->thenReturn()
                         ->paginate(20);
