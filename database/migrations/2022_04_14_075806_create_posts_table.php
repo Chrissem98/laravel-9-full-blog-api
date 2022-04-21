@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->longText('description')->nullable();
+            $table->longText('description');
+            $table->string('image', 512)->nullable();
             $table->timestamps();
 
             $table->softDeletes($column = 'deleted_at', $precision = 0);
