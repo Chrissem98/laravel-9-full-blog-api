@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Http\Pipes\Categories\PostSortFilter;
+use App\Http\Pipes\Categories\PostFieldsFilter;
 
 class PostController extends Controller
 {
@@ -15,7 +17,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = app(Pipeline::class)
+                    ->send(Post::query())
+                    ->through([
+                        PostFieldsFilter::class,
+                        PostSortFilter::class,
+                    ])
+                    ->thenReturn()
+                    ->paginate(20);
     }
 
     /**

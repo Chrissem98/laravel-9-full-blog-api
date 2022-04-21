@@ -2,29 +2,14 @@
 
 namespace App\Http\Pipes\Categories;
 
+use App\Http\Pipes\SortFilter;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
 
-class CategorySortFilter
+class CategorySortFilter extends SortFilter
 {
-    public function handle(Builder $query, Closure $next)
-    {
-        $query->when(request()->has('sort'), function($query){
-            $sort = request()->sort;
-            if(str($sort)->startsWith('-')){
-                $sort = str($sort)->substr(1);
-                if(Schema::hasColumn('categories',$sort)){
-                    $query->orderByDesc($sort);
-                }
-            }
-            else{
-                if(Schema::hasColumn('categories',$sort)){
-                    $query->orderBy($sort);
-                }
-            }
-        });
 
-        return $next($query);
-    }
+    protected string $tableName = 'categories';
+    
 }

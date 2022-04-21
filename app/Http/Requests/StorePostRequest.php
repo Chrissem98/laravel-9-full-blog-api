@@ -24,7 +24,10 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|min:3|max:255|string',
+            'description' => 'required|min:5|string',
+            'image' => 'string|max:512',
+            'category_id' => 'required|exists:categories,id'
         ];
     }
 }
