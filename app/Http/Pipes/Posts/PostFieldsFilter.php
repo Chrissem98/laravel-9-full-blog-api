@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Pipes\Categories;
+namespace App\Http\Pipes\Posts;
 
 use App\Http\Pipes\FieldsFilter;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
 
-class CategoryFieldsFilter extends FieldsFilter
+class PostFieldsFilter extends FieldsFilter
 {
-    
-    protected string $tableName = 'categories';
+
+    protected string $tableName = 'posts';
 
 }

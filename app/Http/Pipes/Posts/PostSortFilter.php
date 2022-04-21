@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Pipes\Categories;
+namespace App\Http\Pipes\Posts;
 
 use App\Http\Pipes\SortFilter;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
 
-class CategorySortFilter extends SortFilter
+class PostSortFilter extends SortFilter
 {
 
-    protected string $tableName = 'categories';
-    
+    protected string $tableName = 'posts';
+
 }
