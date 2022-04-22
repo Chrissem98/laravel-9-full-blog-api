@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Pipeline\Pipeline;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Pipes\Posts\PostSortFilter;
 use App\Http\Requests\UpdatePostRequest;
-use App\Http\Pipes\Categories\PostSortFilter;
-use App\Http\Pipes\Categories\PostFieldsFilter;
+use App\Http\Pipes\Posts\PostFieldsFilter;
 
 class PostController extends Controller
 {
@@ -25,6 +28,8 @@ class PostController extends Controller
                     ])
                     ->thenReturn()
                     ->paginate(20);
+
+        return PostResource::collection($posts);
     }
 
     /**
@@ -35,7 +40,14 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $post = Post::updateOrCreate($request->all());
+
+        return response()->json([
+            'message' => 'Post created successfully',
+            'success' => [
+                'data' => new PostResource($post),
+            ],
+        ], 201);
     }
 
     /**
@@ -46,7 +58,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return new PostResource($post);
     }
 
     /**
@@ -58,7 +70,13 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->update($request->all());
+        return response()->json([
+            'message' => 'Post updated successfully',
+            'success' => [
+                'data' => new PostResource($post),
+            ],
+        ], 200);
     }
 
     /**
@@ -69,6 +87,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if($post->delete())
+            return response()->json([
+                'message' => 'Deleted succeed',
+                'success' => [
+                    'remove-data' => new PostResource($post),
+                ],
+            ]);
     }
 }
